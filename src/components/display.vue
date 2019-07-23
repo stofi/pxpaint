@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col md:flex-row">
-    <div class="Display relative w-100">
+    <div class="Display relative w-100 md:w-1/2">
       <div class="absolute top-0 bottom-0 left-0 right-0 flex flex-col">
         <div class="flex flex-1" v-for="(row, x) in pixels" :key="'row' + x">
           <pixel
@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    <div class="p-4">
+    <div class="p-4 md:w-1/2">
       <pre v-for="{ x, y } in pixelCodes" :key="`pxcode${x}${y}`">{{
         `(${20 + x}, ${96 + y}) #000000`
       }}</pre>
@@ -88,5 +88,10 @@ export default {
 <style scoped>
 .Display {
   padding-bottom: 100%;
+}
+@media (min-width: 768px) {
+  .Display {
+    padding-bottom: 50%;
+  }
 }
 </style>
