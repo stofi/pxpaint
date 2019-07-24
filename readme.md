@@ -1,6 +1,6 @@
 # PxPaint
 
-Simple pixel drawing app, that prints the out coördinates of the pixels. Made to help me plot a drawing for [PixelBot 128](https://www.facebook.com/pixelbot128/) facebook page.
+Simple pixel drawing app, that prints out coördinates of the pixels. Made to help me plot a drawing for [PixelBot 128](https://www.facebook.com/pixelbot128/) facebook page.
 
 Try it [here](https://stofi.github.io/pxpaint)!
 
