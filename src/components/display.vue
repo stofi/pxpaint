@@ -1,7 +1,9 @@
 <template>
   <div class="flex flex-col md:flex-row">
     <div class="Display relative w-100 md:w-1/2">
-      <div class="absolute top-0 bottom-0 left-0 right-0 flex flex-col">
+      <div
+        class="p-4 rounded bg-gray-300 absolute top-0 bottom-0 left-0 right-0 flex flex-col"
+      >
         <div class="flex flex-1" v-for="(row, x) in pixels" :key="'row' + x">
           <pixel
             @px-click="update({ x, y })"
@@ -15,7 +17,7 @@
     </div>
     <div class="p-4 md:w-1/2">
       <pre v-for="{ x, y } in pixelCodes" :key="`pxcode${x}${y}`">{{
-        `(${20 + x}, ${96 + y}) #000000`
+        `(${offsetY + y}, ${offsetX + x}) #000000`
       }}</pre>
     </div>
   </div>
@@ -31,6 +33,20 @@ export default {
     width: {
       type: Number,
       default: 20
+    },
+    offsetX: {
+      type: Number,
+      default: 0,
+      validator(val) {
+        return typeof val === "number";
+      }
+    },
+    offsetY: {
+      type: Number,
+      default: 0,
+      validator(val) {
+        return typeof val === "number";
+      }
     }
   },
   data() {
@@ -42,6 +58,12 @@ export default {
     this.pixels = this.getPixels();
   },
   computed: {
+    cx() {
+      return parseInt(this.offsetX);
+    },
+    cy() {
+      return parseInt(this.offsety);
+    },
     pixelCodes() {
       let codes = [];
       this.pixels.forEach((row, x) =>
@@ -78,7 +100,7 @@ export default {
     },
     update({ x, y }) {
       let copy = this.pixels.slice();
-      copy[x][y] = { state: true };
+      copy[x][y] = { state: !copy[x][y].state };
 
       this.pixels = copy;
     }
