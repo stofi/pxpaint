@@ -1,24 +1,21 @@
 <template>
-  <div class="flex flex-col md:flex-row">
-    <div class="Display relative w-100 md:w-1/2">
+  <div class="flex flex-col">
+    <div class="Display relative w-100">
       <div
         class="p-4 rounded bg-gray-300 absolute top-0 bottom-0 left-0 right-0 flex flex-col"
       >
-        <div class="flex flex-1" v-for="(row, x) in pixels" :key="'row' + x">
+        <div class="flex flex-1" v-for="(row, y) in pixels" :key="'row' + y">
           <pixel
-            @px-click="update({ x, y })"
+            @px-click="$emit('update', { x, y })"
             class="flex-1"
-            v-for="(pixel, y) in row"
-            :key="'px' + y + '' + x"
+            v-for="(pixel, x) in row"
+            :key="'px:' + x + ',' + y"
             :color="pixel.state ? 'black' : 'white'"
+            :x="x"
+            :y="y"
           />
         </div>
       </div>
-    </div>
-    <div class="p-4 md:w-1/2">
-      <pre v-for="{ x, y } in pixelCodes" :key="`pxcode${x}${y}`">{{
-        `(${offsetY + y}, ${offsetX + x}) #000000`
-      }}</pre>
     </div>
   </div>
 </template>
@@ -30,10 +27,10 @@ export default {
     pixel
   },
   props: {
-    width: {
-      type: Number,
-      default: 20
-    },
+    // width: {
+    //   type: Number,
+    //   default: 20
+    // },
     offsetX: {
       type: Number,
       default: 0,
@@ -47,62 +44,10 @@ export default {
       validator(val) {
         return typeof val === "number";
       }
-    }
-  },
-  data() {
-    return {
-      pixels: [[]]
-    };
-  },
-  mounted() {
-    this.pixels = this.getPixels();
-  },
-  computed: {
-    cx() {
-      return parseInt(this.offsetX);
     },
-    cy() {
-      return parseInt(this.offsety);
-    },
-    pixelCodes() {
-      let codes = [];
-      this.pixels.forEach((row, x) =>
-        row.forEach((pixel, y) => {
-          if (pixel.state) {
-            codes.push({ x, y });
-          }
-        })
-      );
-
-      return codes;
-    }
-  },
-  methods: {
-    getPixels(pxFn = this.empty) {
-      return Array(this.width)
-        .fill(null)
-        .map(() =>
-          Array(this.width)
-            .fill(null)
-            .map(pxFn)
-        );
-    },
-    randomPixels() {
-      return this.getPixels(() => this.cointoss());
-    },
-    empty() {
-      return { state: false };
-    },
-    cointoss(odds = 0.5) {
-      return {
-        state: Math.random() > odds
-      };
-    },
-    update({ x, y }) {
-      let copy = this.pixels.slice();
-      copy[x][y] = { state: !copy[x][y].state };
-
-      this.pixels = copy;
+    pixels: {
+      type: Array,
+      default: () => [[]]
     }
   }
 };
@@ -111,9 +56,9 @@ export default {
 .Display {
   padding-bottom: 100%;
 }
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
   .Display {
     padding-bottom: 50%;
   }
-}
+} */
 </style>
