@@ -27,24 +27,6 @@ export default {
     pixel
   },
   props: {
-    // width: {
-    //   type: Number,
-    //   default: 20
-    // },
-    offsetX: {
-      type: Number,
-      default: 0,
-      validator(val) {
-        return typeof val === "number";
-      }
-    },
-    offsetY: {
-      type: Number,
-      default: 0,
-      validator(val) {
-        return typeof val === "number";
-      }
-    },
     pixels: {
       type: Array,
       default: () => [[]]
@@ -56,9 +38,4 @@ export default {
 .Display {
   padding-bottom: 100%;
 }
-/* @media (min-width: 768px) {
-  .Display {
-    padding-bottom: 50%;
-  }
-} */
 </style>
