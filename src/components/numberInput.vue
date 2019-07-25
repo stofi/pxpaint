@@ -22,11 +22,15 @@ export default {
     title: {
       type: String,
       default: ""
+    },
+    initial: {
+      type: Number,
+      default: 0
     }
   },
   data() {
     return {
-      value: 0
+      value: this.initial
     };
   },
   watch: {

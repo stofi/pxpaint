@@ -4,15 +4,13 @@
       <div
         class="p-4 rounded bg-gray-300 absolute top-0 bottom-0 left-0 right-0 flex flex-col"
       >
-        <div class="flex flex-1" v-for="(row, y) in pixels" :key="'row' + y">
+        <div class="flex flex-1" v-for="(_, y) in range" :key="'row' + y">
           <pixel
             @px-click="$emit('update', { x, y })"
             class="flex-1"
-            v-for="(pixel, x) in row"
+            v-for="(_, x) in range"
             :key="'px:' + x + ',' + y"
-            :color="pixel.state ? 'black' : 'white'"
-            :x="x"
-            :y="y"
+            :color="getColor({ x, y })"
           />
         </div>
       </div>
@@ -28,8 +26,26 @@ export default {
   },
   props: {
     pixels: {
-      type: Array,
-      default: () => [[]]
+      type: Object,
+      default: () => {}
+    },
+    width: {
+      type: Number,
+      default: 0,
+      required: true
+    }
+  },
+  computed: {
+    range() {
+      return Array(this.width).fill(null);
+    }
+  },
+  methods: {
+    getColor({ x, y }) {
+      const state = this.pixels[`${x},${y}`]
+        ? this.pixels[`${x},${y}`].state
+        : false;
+      return state ? "black" : "white";
     }
   }
 };

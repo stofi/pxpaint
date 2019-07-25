@@ -8,8 +8,7 @@ Try it [here](https://stofi.github.io/pxpaint)!
 
 ## Todo:
 
-- Desktop layout
 - Color picker
 - Clear button
 - Undo
-- Variable size
+- Number input min/max constrains
