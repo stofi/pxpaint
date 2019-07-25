@@ -33,6 +33,7 @@
             v-model="width"
             :initial="20"
           />
+          <color-picker v-model="color" />
         </div>
         <px-output :pixel-codes="codes" />
       </div>
@@ -44,13 +45,15 @@
 import display from "./components/display";
 import numberInput from "./components/numberInput";
 import pxOutput from "./components/output";
+import colorPicker from "./components/colorPicker";
 
 export default {
   name: "app",
   components: {
     display,
     numberInput,
-    pxOutput
+    pxOutput,
+    colorPicker
   },
   data() {
     return {
@@ -64,7 +67,8 @@ export default {
       },
       width: 20,
       pixels: {},
-      codes: []
+      codes: [],
+      color: "#ffffff"
     };
   },
   watch: {
@@ -129,7 +133,8 @@ export default {
       this.$store.commit("setPixel", {
         x: x + this.origin.x,
         y: y + this.origin.y,
-        state
+        state,
+        color: this.color
       });
       this.refresh();
     }
