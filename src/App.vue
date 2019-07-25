@@ -68,7 +68,7 @@ export default {
       width: 20,
       pixels: {},
       codes: [],
-      color: "#ffffff"
+      color: "#000000"
     };
   },
   watch: {
