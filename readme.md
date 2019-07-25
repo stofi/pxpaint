@@ -12,3 +12,4 @@ Try it [here](https://stofi.github.io/pxpaint)!
 - Clear button
 - Undo
 - Number input min/max constrains
+- Collapsable dialogs
