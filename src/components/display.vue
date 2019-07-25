@@ -61,7 +61,7 @@ export default {
       const state = this.pixels[`${x},${y}`]
         ? this.pixels[`${x},${y}`].state
         : false;
-      return state ? "black" : "white";
+      return state ? this.pixels[`${x},${y}`].color : "white";
     }
   }
 };
