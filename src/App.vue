@@ -26,7 +26,7 @@
             <number-input title="y:" v-model="offset.y" />
           </div>
         </div>
-        <div class="rounded mb-4 p-4 bg-gray-300 flex">
+        <div class="rounded mb-4 p-4 bg-gray-300 flex flex-shrink-0">
           <number-input
             class="mr-2 flex-shrink-0"
             title="w:"
