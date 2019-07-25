@@ -1,5 +1,9 @@
 <template>
-  <div @click="$emit('px-click')" :style="style" />
+  <div
+    @click="$emit('px-click')"
+    @mouseenter="$emit('px-hover')"
+    :style="style"
+  />
 </template>
 
 <script>

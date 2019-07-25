@@ -116,11 +116,11 @@ export default {
         .fill(null)
         .map(() => Array(this.width).fill(null));
     },
-    update({ x, y }) {
-      const state = this.pixels[`${x},${y}`]
+    update({ x, y }, stroke = false) {
+      let state = this.pixels[`${x},${y}`]
         ? !this.pixels[`${x},${y}`].state
         : true;
-
+      state = stroke ? true : state;
       this.$store.commit("setPixel", {
         x: x + this.origin.x,
         y: y + this.origin.y,
