@@ -2,6 +2,7 @@
   <div
     @mousedown="mousedown = true"
     @mouseup="mousedown = false"
+    @mouseleave="mousedown = false"
     class="flex flex-col"
   >
     <div class="Display relative w-100">
