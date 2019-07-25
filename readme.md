@@ -13,3 +13,9 @@ Try it [here](https://stofi.github.io/pxpaint)!
 - Undo
 - Number input min/max constrains
 - Collapsable dialogs
+
+## Discussion
+
+- Capture pointer in Display component instead of on Pixel. 
+- Implement command pattern, queue commands and draw them from queue
+- There are reactivity side-effect whith objects, consider refactoring to an array. (There may be some performance issues)
