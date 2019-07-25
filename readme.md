@@ -16,6 +16,6 @@ Try it [here](https://stofi.github.io/pxpaint)!
 
 ## Discussion
 
-- Capture pointer in Display component instead of on Pixel. 
-- Implement command pattern, queue commands and draw them from queue
-- There are reactivity side-effect whith objects, consider refactoring to an array. (There may be some performance issues)
+- Capture pointer position in the Display component instead of on Pixel. 
+- Implement the command pattern. Queue commands and draw pixels from queue.
+- There are reactivity side-effect with objects, consider refactoring to an array. (There may be some performance issues.)
