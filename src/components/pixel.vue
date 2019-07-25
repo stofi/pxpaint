@@ -11,15 +11,15 @@ export default {
   props: {
     color: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   computed: {
     style() {
       return {
         backgroundColor: this.color
-      };
+      }
     }
   }
-};
+}
 </script>

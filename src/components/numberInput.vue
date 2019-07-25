@@ -21,7 +21,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: ""
+      default: ''
     },
     initial: {
       type: Number,
@@ -31,14 +31,14 @@ export default {
   data() {
     return {
       value: this.initial
-    };
+    }
   },
   watch: {
     value() {
-      this.$emit("input", this.value);
+      this.$emit('input', this.value)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped></style>

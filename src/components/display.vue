@@ -24,7 +24,7 @@
   </div>
 </template>
 <script>
-import pixel from "./pixel.vue";
+import pixel from './pixel.vue'
 
 export default {
   components: {
@@ -44,27 +44,27 @@ export default {
   data() {
     return {
       mousedown: false
-    };
+    }
   },
   computed: {
     range() {
-      return Array(this.width).fill(null);
+      return Array(this.width).fill(null)
     }
   },
   methods: {
     hoverHandler(e, { x, y }) {
       if (this.mousedown) {
-        this.$emit("update", { x, y }, true);
+        this.$emit('update', { x, y }, true)
       }
     },
     getColor({ x, y }) {
       const state = this.pixels[`${x},${y}`]
         ? this.pixels[`${x},${y}`].state
-        : false;
-      return state ? this.pixels[`${x},${y}`].color : "white";
+        : false
+      return state ? this.pixels[`${x},${y}`].color : 'white'
     }
   }
-};
+}
 </script>
 <style scoped>
 .Display {

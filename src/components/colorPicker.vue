@@ -16,20 +16,20 @@ export default {
   props: {
     initial: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   data() {
     return {
       value: this.initial
-    };
+    }
   },
   watch: {
     value() {
-      this.$emit("input", this.value);
+      this.$emit('input', this.value)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped></style>

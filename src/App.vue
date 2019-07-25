@@ -42,13 +42,13 @@
 </template>
 
 <script>
-import display from "./components/display";
-import numberInput from "./components/numberInput";
-import pxOutput from "./components/output";
-import colorPicker from "./components/colorPicker";
+import display from './components/display'
+import numberInput from './components/numberInput'
+import pxOutput from './components/output'
+import colorPicker from './components/colorPicker'
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
     display,
     numberInput,
@@ -68,76 +68,76 @@ export default {
       width: 20,
       pixels: {},
       codes: [],
-      color: "#000000"
-    };
+      color: '#000000'
+    }
   },
   watch: {
     origin: {
       handler() {
-        this.refresh();
+        this.refresh()
       },
       deep: true
     },
     offset: {
       handler() {
-        this.refresh();
+        this.refresh()
       },
       deep: true
     }
   },
   mounted() {
-    this.refresh();
+    this.refresh()
   },
   methods: {
     refresh() {
-      this.pixels = this.getPixels();
-      this.codes = this.getCodes();
+      this.pixels = this.getPixels()
+      this.codes = this.getCodes()
     },
     getCodes() {
-      let codes = [];
+      let codes = []
       Object.keys(this.$store.state.pixels).forEach(key => {
-        let px = this.$store.state.pixels[key];
-        if (!px.state) return;
+        let px = this.$store.state.pixels[key]
+        if (!px.state) return
         codes.push({
           x: px.x + this.offset.x,
           y: px.y + this.offset.y,
-          color: "#000000"
-        });
-      });
-      return codes;
+          color: '#000000'
+        })
+      })
+      return codes
     },
     getPixels() {
-      let translatedPixels = {};
+      let translatedPixels = {}
       this.getEmptyMatrix().forEach((row, y) =>
         row.forEach((pixel, x) => {
           let stored = this.$store.getters.getPixel({
             x: x + this.origin.x,
             y: y + this.origin.y
-          });
-          if (!stored) return;
-          translatedPixels[`${x},${y}`] = stored;
+          })
+          if (!stored) return
+          translatedPixels[`${x},${y}`] = stored
         })
-      );
-      return translatedPixels;
+      )
+      return translatedPixels
     },
     getEmptyMatrix() {
       return Array(this.width)
         .fill(null)
-        .map(() => Array(this.width).fill(null));
+        .map(() => Array(this.width).fill(null))
     },
     update({ x, y }, stroke = false) {
       let state = this.pixels[`${x},${y}`]
         ? !this.pixels[`${x},${y}`].state
-        : true;
-      state = stroke ? true : state;
-      this.$store.commit("setPixel", {
+        : true
+      state = stroke ? true : state
+      this.$store.commit('setPixel', {
         x: x + this.origin.x,
         y: y + this.origin.y,
         state,
         color: this.color
-      });
-      this.refresh();
+      })
+      this.refresh()
     }
   }
-};
+}
 </script>
