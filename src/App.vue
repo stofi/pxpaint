@@ -1,5 +1,8 @@
 <template>
-  <div id="app" class="bg-gray-100 h-screen w-screen p-4 flex justify-around">
+  <div
+    id="app"
+    class="bg-gray-100 h-screen w-screen p-4 flex justify-around overflow-x-auto"
+  >
     <div class="container flex flex-col md:flex-row">
       <div class="md:w-1/2 mb-4 md:mb-0 md:mr-4">
         <display :width="this.width" :pixels="pixels" @update="update" />
@@ -23,12 +26,14 @@
             <number-input title="y:" v-model="offset.y" />
           </div>
         </div>
-        <number-input
-          class="mb-4"
-          title="width:"
-          v-model="width"
-          :initial="20"
-        />
+        <div class="rounded mb-4 p-4 bg-gray-300 flex">
+          <number-input
+            class="mr-2 flex-shrink-0"
+            title="w:"
+            v-model="width"
+            :initial="20"
+          />
+        </div>
         <px-output :pixel-codes="codes" />
       </div>
     </div>
