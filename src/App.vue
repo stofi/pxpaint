@@ -101,7 +101,7 @@ export default {
         codes.push({
           x: px.x + this.offset.x,
           y: px.y + this.offset.y,
-          color: '#000000'
+          color: px.color
         })
       })
       return codes
