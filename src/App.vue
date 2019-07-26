@@ -31,7 +31,7 @@
             class="mr-2 flex-shrink-0"
             title="w:"
             v-model="width"
-            :initial="20"
+            :initial="this.width"
           />
           <color-picker v-model="color" />
         </div>
@@ -66,34 +66,30 @@ export default {
         y: 0
       },
       width: 20,
-      pixels: {},
-      codes: [],
       color: '#000000'
     }
   },
-  watch: {
-    origin: {
-      handler() {
-        this.refresh()
-      },
-      deep: true
+  computed: {
+    getEmptyMatrix() {
+      return Array(this.width)
+        .fill(null)
+        .map(() => Array(this.width).fill(null))
     },
-    offset: {
-      handler() {
-        this.refresh()
-      },
-      deep: true
-    }
-  },
-  mounted() {
-    this.refresh()
-  },
-  methods: {
-    refresh() {
-      this.pixels = this.getPixels()
-      this.codes = this.getCodes()
+    pixels() {
+      let pixels = {}
+      this.getEmptyMatrix.forEach((row, y) =>
+        row.forEach((pixel, x) => {
+          let stored = this.$store.getters.getPixel({
+            x: x + this.origin.x,
+            y: y + this.origin.y
+          })
+          if (!stored) return
+          this.$set(pixels, `${x},${y}`, stored)
+        })
+      )
+      return pixels
     },
-    getCodes() {
+    codes() {
       let codes = []
       Object.keys(this.$store.state.pixels).forEach(key => {
         let px = this.$store.state.pixels[key]
@@ -105,38 +101,34 @@ export default {
         })
       })
       return codes
-    },
-    getPixels() {
-      let translatedPixels = {}
-      this.getEmptyMatrix().forEach((row, y) =>
-        row.forEach((pixel, x) => {
-          let stored = this.$store.getters.getPixel({
-            x: x + this.origin.x,
-            y: y + this.origin.y
-          })
-          if (!stored) return
-          translatedPixels[`${x},${y}`] = stored
-        })
-      )
-      return translatedPixels
-    },
-    getEmptyMatrix() {
-      return Array(this.width)
-        .fill(null)
-        .map(() => Array(this.width).fill(null))
-    },
-    update({ x, y }, stroke = false) {
+    }
+  },
+  methods: {
+    update({ x, y }, mousedown = false) {
       let state = this.pixels[`${x},${y}`]
         ? !this.pixels[`${x},${y}`].state
         : true
-      state = stroke ? true : state
-      this.$store.commit('setPixel', {
-        x: x + this.origin.x,
-        y: y + this.origin.y,
-        state,
-        color: this.color
-      })
-      this.refresh()
+      state = mousedown || state
+
+      if (state) {
+        this.$set(this.pixels, `${x},${y}`, {
+          ...this.pixels[`${x},${y}`],
+          color: this.color,
+          state
+        })
+        this.$store.commit('setPixel', {
+          x: x + this.origin.x,
+          y: y + this.origin.y,
+          state,
+          color: this.color
+        })
+      } else {
+        this.$delete(this.pixels, `${x},${y}`)
+        this.$store.commit('deletePixel', {
+          x: x + this.origin.x,
+          y: y + this.origin.y
+        })
+      }
     }
   }
 }

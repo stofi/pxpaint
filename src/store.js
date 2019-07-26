@@ -9,7 +9,10 @@ export default new Vuex.Store({
   },
   mutations: {
     setPixel(state, pixel) {
-      state.pixels[`${pixel.x},${pixel.y}`] = pixel
+      Vue.set(state.pixels, `${pixel.x},${pixel.y}`, pixel)
+    },
+    deletePixel(state, pixel) {
+      Vue.delete(state.pixels, `${pixel.x},${pixel.y}`)
     }
   },
   getters: {
