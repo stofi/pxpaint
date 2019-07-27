@@ -16,3 +16,4 @@ Try it [here](https://stofi.github.io/pxpaint)!
 ## Discussion
 
 - Implement the command pattern. Queue commands and draw pixels from queue.
+- Draw lines (Bresenham algorithm) between debounced pointer coordinates
