@@ -30,7 +30,10 @@ export default {
   },
   data() {
     return {
+      keys: [],
       dirty: false,
+      toChange: [],
+      toDelete: [],
       mousedown: false,
       lastpos: {
         x: -1,
@@ -52,7 +55,23 @@ export default {
     window.removeEventListener('mousemove', this.moveHandler)
   },
   watch: {
-    pixels() {
+    width() {
+      this.clear()
+    },
+    pixels(n, o) {
+      const newpx = Object.keys(n)
+      const oldpx = [...this.keys]
+
+      this.toDelete = oldpx.filter(px => newpx.indexOf(px) === -1)
+      this.toChange = newpx.filter(px => {
+        if (!n[px].state) {
+          this.toDelete.push(px)
+          return false
+        }
+        if (oldpx.indexOf(px) === -1) return true
+        return n[px].color !== o[px].color
+      })
+      this.keys = newpx.filter(px => n[px].state)
       this.dirty = true
     }
   },
@@ -73,8 +92,16 @@ export default {
   methods: {
     draw() {
       if (this.dirty) {
-        this.clear()
-        Object.keys(this.pixels).forEach(key => {
+        this.toDelete.forEach(key => {
+          const [x, y] = key.split(',')
+          this.drawPixel({
+            x,
+            y,
+            color: '',
+            state: false
+          })
+        })
+        this.toChange.forEach(key => {
           this.drawPixel(this.pixels[key])
         })
       }
@@ -84,8 +111,14 @@ export default {
     sizeCanvas() {
       this.canvas.style.width = '100%'
       this.canvas.style.height = '100%'
-      this.canvas.width = this.canvas.offsetWidth * 2
-      this.canvas.height = this.canvas.offsetHeight * 2
+      let width = this.canvas.offsetWidth * 2
+      let height = this.canvas.offsetHeight * 2
+
+      const pxwidth = Math.ceil(width / this.width) * this.width
+      const pxheight = Math.ceil(height / this.height) * this.height
+
+      this.canvas.width = pxwidth
+      this.canvas.height = pxheight
     },
     drawPixel({ color, x, y, state }) {
       this.context.save()
