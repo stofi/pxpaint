@@ -84,7 +84,11 @@ export default {
             y: y + this.origin.y
           })
           if (!stored) return
-          this.$set(pixels, `${x},${y}`, stored)
+          this.$set(pixels, `${x},${y}`, {
+            ...stored,
+            x: stored.x - this.origin.x,
+            y: stored.y - this.origin.y
+          })
         })
       )
       return pixels

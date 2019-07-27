@@ -10,25 +10,13 @@
         ref="display"
         class="Display__Canvas p-4 rounded bg-gray-300 absolute top-0 bottom-0 left-0 right-0 flex flex-col"
       >
-        <div class="flex flex-1" v-for="(_, y) in range" :key="'row' + y">
-          <pixel
-            class="flex-1"
-            v-for="(_, x) in range"
-            :key="'px:' + x + ',' + y"
-            :color="getColor({ x, y })"
-          />
-        </div>
+        <canvas ref="canvas" />
       </div>
     </div>
   </div>
 </template>
 <script>
-import pixel from './pixel.vue'
-
 export default {
-  components: {
-    pixel
-  },
   props: {
     pixels: {
       type: Object,
@@ -42,6 +30,7 @@ export default {
   },
   data() {
     return {
+      dirty: false,
       mousedown: false,
       lastpos: {
         x: -1,
@@ -54,17 +43,70 @@ export default {
     }
   },
   mounted() {
+    this.sizeCanvas()
+    this.clear()
     window.addEventListener('mousemove', this.moveHandler)
+    requestAnimationFrame(this.draw)
   },
   destroyed() {
     window.removeEventListener('mousemove', this.moveHandler)
   },
+  watch: {
+    pixels() {
+      this.dirty = true
+    }
+  },
   computed: {
     range() {
       return Array(this.width).fill(null)
+    },
+    canvas() {
+      return this.$refs.canvas
+    },
+    context() {
+      return this.canvas.getContext('2d')
+    },
+    height() {
+      return this.width
     }
   },
   methods: {
+    draw() {
+      if (this.dirty) {
+        this.clear()
+        Object.keys(this.pixels).forEach(key => {
+          this.drawPixel(this.pixels[key])
+        })
+      }
+      requestAnimationFrame(this.draw)
+      this.dirty = false
+    },
+    sizeCanvas() {
+      this.canvas.style.width = '100%'
+      this.canvas.style.height = '100%'
+      this.canvas.width = this.canvas.offsetWidth * 2
+      this.canvas.height = this.canvas.offsetHeight * 2
+    },
+    drawPixel({ color, x, y, state }) {
+      this.context.save()
+      {
+        const pxwidth = this.canvas.width / this.width
+        const pxheight = this.canvas.height / this.height
+        const x0 = x * pxwidth
+        const y0 = y * pxheight
+        this.context.fillStyle = state ? color : 'white'
+        this.context.fillRect(x0, y0, pxwidth, pxheight)
+      }
+      this.context.restore()
+    },
+    clear() {
+      this.context.save()
+      {
+        this.context.fillStyle = 'white'
+        this.context.fillRect(0, 0, this.canvas.height, this.canvas.width)
+      }
+      this.context.restore()
+    },
     getXY({ x, y }) {
       const padding = 16
       let {
